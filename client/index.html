@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
+<title>Project Lunatic</title>
+<link rel="stylesheet" type="text/css" href="main.css">
+<meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+<script src="socket.io/socket.io.js"></script>
+<script type="text/javascript" src="shared/globals.js"></script>
+<script type="text/javascript" src="shared/point.js"></script>
+<script type="text/javascript" src="shared/map.js"></script>
+
+<script type="text/javascript" src="js/jquery-1.5.min.js"></script>
+<script type="text/javascript" src="js/sprite.js"></script>
+
+<script type="text/javascript" src="js/loop.js"></script>
+<script type="text/javascript" src="js/input.js"></script>
+<script type="text/javascript" src="js/gameplay.js"></script>
+
+<script type="text/javascript" src="js/maprenderer.js"></script>
+<script>
+
+$(window).load(function() {
+	var backbuffer = document.createElement('canvas');
+	backbuffer.width = SCREEN_WIDTH;
+	backbuffer.height = SCREEN_WIDTH;
+	var backbuffer_ctx = backbuffer.getContext('2d');
+	console.log(backbuffer);
+	console.log(backbuffer_ctx);
+
+	var canvas = document.getElementById('board');
+	canvas.width = SCREEN_WIDTH;
+	canvas.height = SCREEN_HEIGHT;
+	ctx = canvas.getContext('2d');
+
+	var scene = new Gameplay(backbuffer_ctx);
+
+	loop = new Loop(canvas, function(state) {
+		scene.update(state);
+
+		backbuffer_ctx.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+		scene.draw(state);
+
+		ctx.clearRect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
+		ctx.drawImage(backbuffer, 0, 0);
+	});
+	
+	loop.startLoop();
+});
+</script>
+</head>
+<body>
+<h1>Slime Tornament</h1>
+<div id="info"></div>
+<canvas id="board" width="640" height="480"></canvas>
+</body>
+</html>
